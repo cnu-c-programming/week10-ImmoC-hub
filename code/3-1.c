@@ -54,7 +54,7 @@ void delete(char* name){
 void print() {
     struct Student* p = head;
     while (p!=NULL){
-        printf("%s\n",p->name);
+        printf("%s %d\n",p->name,p->score);
         p=p->next;
     }
 }
