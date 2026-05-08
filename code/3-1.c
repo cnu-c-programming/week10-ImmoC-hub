@@ -49,7 +49,7 @@ void delete(char* name){
 
     prev -> next = p->next;
     free(p);
-}
+} 
 
 void print() {
     struct Student* p = head;
