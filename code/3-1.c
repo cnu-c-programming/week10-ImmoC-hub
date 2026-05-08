@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 struct Student {
-    char* name; //임의로 설정.
+    char name[10]; //임의로 설정.
     int score;
     struct Student* next;
 };
@@ -11,69 +12,81 @@ struct Student {
 struct Student* head = NULL;
 
 void add(char* name, int score){
-    struct Student* p = list[0];
-    if (p == NULL){
-        struct Student s;
-        s.name = name;
-        s.score = score;
-        s.next = NULL;
-        list[0] = s;
+
+    struct Student* newNode = (struct Student*)malloc(sizeof(struct Student));
+
+    strcpy(newNode->name, name);
+    newNode->score = score;
+    newNode->next = NULL;
+
+    if (head == NULL){
+        head = newNode;
         return;
     }
-    while(p.next!=NULL){
-        p = p.next();
+
+    struct Student* p = head;
+    while(p->next != NULL){
+        p = p->next;
     }
-    struct Student* s;
-    s.name = name;
-    s.score = score;
-    s.next = NULL;
-    p.next=s;
-    list[count++] = s;
-    return;
+    p->next = newNode; 
 }
 
 void delete(char* name){
-    struct Student* p = list[0];
-    if (p.name==name){
-        list[0] = p.next();
+
+    struct Student* p = head;
+    struct Student* prev = NULL;
+
+    if (strcmp(head->name,name)==0){
+        head = head->next;
+        free(p);
+        return;
     }
-    while(p.next.name!=name){
-        p=p.next;
+
+    while (strcmp(p->name,name)!=0){
+        prev = p;
+        p = p->next;
     }
-    p.next=p.next.next;
+
+    prev -> next = p->next;
+    free(p);
 }
 
 void print() {
-    struct Student* p = list[0];
-    printf("%s\n", p.name);
-    while (p.next!=NULL){
-        p=p.next;
-        printf("%s\n",p.name);
+    struct Student* p = head;
+    while (p!=NULL){
+        printf("%s\n",p->name);
+        p=p->next;
     }
 }
     
 
 int main() {
-    list = (struct Student*)malloc(5);
-    count = 0;
+
     while (true){
+
         char cmd[6], name[10];
         int score;
         scanf("%s",cmd);
+        
         if(strcmp(cmd,"add")==0){
             scanf("%s %d", name, &score);
             add(name, score);
         }
-        else if (strcmp(cmd,"delete"==0)){
+        else if (strcmp(cmd,"delete")==0){
             scanf("%s",name);
             delete(name);
         }
-        else if (strcmp(cmd,"print"==0)){
+        else if (strcmp(cmd,"print")==0){
             print();
         }
         else if (strcmp(cmd,"quit")==0){
             struct Student* p = head;
-            while (p!=NULL)
+            while (p!=NULL) {
+                struct Student* temp = p;
+                p = p->next;
+                free(temp);
+            }
+            break;
         }
     }
 }
